@@ -6,6 +6,7 @@ CacheManager::CacheManager()
     this -> cache_path = home + "/.final_project/cache";
     this -> cache_log = this -> cache_path + "/.cache.log";
     this -> log.open( this -> cache_log, std::fstream::in);
+    createDir(this -> cache_path);
     if(log.eof())
         this -> last_cache = 0;
     else
@@ -67,9 +68,8 @@ CacheManager::prepCache(const string& board,const unsigned int thread)
             while(time(NULL) - this -> last_cache <= 1)
                 sleep(1);
     }
-    if (!cacheFile(this->API_url + file_path, json_file))
-        return access(json_file.c_str(),F_OK) != -1;
-    return true;
+    return cacheFile(this->API_url + file_path, json_file) ||
+        access(json_file.c_str(),F_OK) != -1;
 }
 
 bool

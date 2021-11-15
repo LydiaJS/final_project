@@ -24,8 +24,8 @@ testOriginalPost()
     CacheManager CM;
     const string board = "g";
     unsigned int thread_no = 2;
-    string thread_list_file = "/home/user/.agp2/cache/"+board+"/threads.json";
-    string thread_file_path = "/home/user/.agp2/cache/"+board+"/thread/";
+    string thread_list_file = "/home/user/.final_project/cache/"+board+"/threads.json";
+    string thread_file_path = "/home/user/.final_project/cache/"+board+"/thread/";
     CM.prepCache(board,0);
 
     Json::Value thread_info, threads;
