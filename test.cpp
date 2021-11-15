@@ -23,22 +23,13 @@ testOriginalPost()
     ifstream thread_file, threads_file;
     CacheManager CM;
     const string board = "g";
-    unsigned int thread_no = 2;
-    string thread_list_file = "/home/user/.final_project/cache/"+board+"/threads.json";
-    string thread_file_path = "/home/user/.final_project/cache/"+board+"/thread/";
-    CM.prepCache(board,0);
-
-    Json::Value thread_info, threads;
-    thread_file.open(thread_list_file.c_str(), 
-            std::ios::binary);
-    thread_file >> threads;
-    thread_file.close();
-    thread_no = threads[0]["threads"][3]["no"].asInt();
+    const string home = getenv("HOME");
+    unsigned int thread_no = 76759434;
     CM.prepCache(board,thread_no);
-
-    thread_file_path += to_string(thread_no) + ".json";
-    thread_file.open(thread_file_path.c_str(), 
+    Json::Value thread_info, threads;
+    thread_file.open(home + "/" + ".final_project/cache/g/thread/76759434.json", 
             std::ios::binary);
+    cout << "got here" << endl;
     thread_file >> thread_info;
     thread_file.close();
 

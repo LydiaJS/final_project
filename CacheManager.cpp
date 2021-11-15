@@ -66,10 +66,9 @@ CacheManager::prepCache(const string& board,const unsigned int thread)
                 return true;
         case FORCE_REFRESH:
             while(time(NULL) - this -> last_cache <= 1)
-                sleep(1);
+                sleep(.5);
     }
-    return cacheFile(this->API_url + file_path, json_file) ||
-        access(json_file.c_str(),F_OK) != -1;
+    return cacheFile(this->API_url + file_path, json_file);
 }
 
 bool
