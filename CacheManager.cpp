@@ -5,9 +5,10 @@ CacheManager::CacheManager()
     this -> state = REFRESH;
     this -> cache_path = home + "/.final_project/cache";
     this -> cache_log = this -> cache_path + "/.cache.log";
+    if(!dirExists(this -> cache_path))
+        createDir(this -> cache_path);
     this -> log.open( this -> cache_log, std::fstream::in);
-    createDir(this -> cache_path);
-    if(!this -> log.good() || this -> log.eof())
+    if(this -> log.bad() || this -> log.eof())
         this -> last_cache = 0;
     else
         this -> log >> this -> last_cache;
@@ -68,7 +69,16 @@ CacheManager::prepCache(const string& board,const unsigned int thread)
             while(time(NULL) - this -> last_cache <= 1)
                 sleep(.5);
     }
-    return cacheFile(this->API_url + file_path, json_file);
+    return cacheFile(this->API_url + file_path, json_file) || 
+        access(json_file.c_str(),F_OK) != -1;
+}
+
+
+inline bool
+CacheManager::dirExists(const string &path)
+{
+    struct stat st;
+    return (!stat(path.c_str(), &st) && (st.st_mode & S_IFDIR));
 }
 
 bool
@@ -82,7 +92,7 @@ CacheManager::createDir(const string& path)
     while(std::getline(path_stream, segment, '/'))
     {
         current_path += "/" + segment;
-        if(!stat(current_path.c_str(), &st) && (st.st_mode & S_IFDIR))
+        if(dirExists(current_path))
             continue;
         mkdir(current_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }

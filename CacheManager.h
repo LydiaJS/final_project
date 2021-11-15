@@ -29,6 +29,7 @@ CacheManager
         time_t last_cache;
         bool cacheFile(const string&,const string&);
         bool createDir(const string&);
+        inline bool dirExists(const string&);
     public:
             CacheManager();
             bool prepCache(const string&, const unsigned int);
