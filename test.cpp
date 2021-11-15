@@ -32,7 +32,6 @@ testOriginalPost()
             + ".final_project/cache/g/thread/" 
             + to_string(thread_no) + ".json", 
             std::ios::binary);
-    cout << "got here" << endl;
     thread_file >> thread_info;
     thread_file.close();
 

@@ -7,7 +7,7 @@ CacheManager::CacheManager()
     this -> cache_log = this -> cache_path + "/.cache.log";
     this -> log.open( this -> cache_log, std::fstream::in);
     createDir(this -> cache_path);
-    if(log.eof())
+    if(!this -> log.good() || this -> log.eof())
         this -> last_cache = 0;
     else
         this -> log >> this -> last_cache;
