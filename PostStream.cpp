@@ -27,3 +27,9 @@ PostStream::indent(int w)
     this -> buf.set_indent(w);
     return *this;
 }
+
+PostBuf&
+PostStream::getPostBuf()
+{
+    return this -> buf;
+}

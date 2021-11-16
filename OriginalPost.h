@@ -5,7 +5,8 @@
 #include "Reply.h"
 #include "colors.h"
 #include "PostStream.h"
-#define DEFAULT_BORDER "+-"
+#define DEFAULT_BORDER "~"
+#define INDENT_SIZE 5
 
 using namespace std;
 
@@ -14,8 +15,8 @@ OriginalPost:
     public Post
 {
     private:
+        friend Reply;
         bool format,
-             colorize,
              split_replies,
              indent_replies,
              minimal;
@@ -28,6 +29,7 @@ OriginalPost:
         OriginalPost(const Json::Value&);
         OriginalPost(const Json::Value&,bool);
         Reply *getReplies(size_t&);
+        bool isColorized();
         void setFormat(bool);
         void setColorize(bool);
         void setSplitReplies(bool);

@@ -1,7 +1,8 @@
 #include "CacheManager.h"
 CacheManager::CacheManager()
 {
-    string home = getenv("HOME");
+    string home;
+    home = getenv("HOME");
     this -> state = REFRESH;
     this -> cache_path = home + "/.final_project/cache";
     this -> cache_log = this -> cache_path + "/.cache.log";
@@ -9,7 +10,7 @@ CacheManager::CacheManager()
         createDir(this -> cache_path);
     this -> log.open( this -> cache_log, std::fstream::in);
     if(this -> log.bad() || this -> log.eof())
-        this -> last_cache = 0;
+        this -> last_cache = 0; // retro
     else
         this -> log >> this -> last_cache;
     this -> log.close();
@@ -59,18 +60,18 @@ CacheManager::prepCache(const string& board,const unsigned int thread)
     switch(this -> state)
     {
         case NEVER_REFRESH:
-            return access(json_file.c_str(),F_OK) != -1;
+            return FILEEXISTS(json_file);
         case REFRESH:
-            if(time(NULL) - this -> last_cache > 1)
+            if(time(NULL) - this -> last_cache > REFRESH_COOLDOWN)
                 break;
-            if (access(json_file.c_str(),F_OK) != -1)
+            if (FILEEXISTS(json_file))
                 return true;
         case FORCE_REFRESH:
-            while(time(NULL) - this -> last_cache <= 1)
-                sleep(.5);
+            while(time(NULL) - this -> last_cache <= REFRESH_COOLDOWN)
+                sleep(1);
     }
     return cacheFile(this->API_url + file_path, json_file) || 
-        access(json_file.c_str(),F_OK) != -1;
+        FILEEXISTS(json_file);
 }
 
 
@@ -84,7 +85,6 @@ CacheManager::dirExists(const string &path)
 bool
 CacheManager::createDir(const string& path)
 {
-    struct stat st;
     stringstream path_stream;
     string segment, current_path;
     current_path = "";
@@ -92,8 +92,9 @@ CacheManager::createDir(const string& path)
     while(std::getline(path_stream, segment, '/'))
     {
         current_path += "/" + segment;
-        if(dirExists(current_path))
-            continue;
-        mkdir(current_path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+        if(!dirExists(current_path))
+            mkdir(current_path.c_str(),
+                    S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     }
+    return dirExists(path);
 }

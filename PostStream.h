@@ -19,6 +19,7 @@ PostStream:
         PostStream(size_t, std::ostream&);
         PostStream(std::ostream&);
         PostStream& indent(int);
+        PostBuf& getPostBuf();
     private:
         static int getWindowSize();
         static int window_size;

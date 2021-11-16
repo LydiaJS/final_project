@@ -4,6 +4,7 @@
 #include <string>
 #include <ostream>
 #include <jsoncpp/json/json.h>
+#include "colors.h"
 
 using namespace std;
 
@@ -13,6 +14,8 @@ Post
     protected:
         Json::Value info;
         bool empty;
+        bool colorize;
+        string default_color;
     public:
         friend ostream& operator << (ostream&, const Post&);
         Post();

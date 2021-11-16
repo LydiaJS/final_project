@@ -8,7 +8,7 @@ OriginalPost::OriginalPost():
     this -> split_replies = true;
     this -> indent_replies = true;
     this -> minimal = false;
-    this -> colorize = true;
+    this -> default_color = YELLOW_FG;
     this -> border_pattern = DEFAULT_BORDER;
 }
 
@@ -20,12 +20,14 @@ OriginalPost::OriginalPost(const Json::Value& in_info):
     this -> format = true;
     this -> split_replies = true;
     this -> indent_replies = true;
-    this -> colorize = true;
     this -> border_pattern = DEFAULT_BORDER;
     reply_count = this -> info["replies"].asInt();
     this -> replies = new Reply[reply_count];
     for(count = 0; count < reply_count; count++)
+    {
         this -> replies[count] = Reply(in_info["posts"][count + 1]);
+        replies[count].colorize = this -> colorize;
+    }
 }
 
 OriginalPost::OriginalPost(const Json::Value& in_info, bool in_minimal):
@@ -36,7 +38,6 @@ OriginalPost::OriginalPost(const Json::Value& in_info, bool in_minimal):
     this -> split_replies = true;
     this -> indent_replies = true;
     this -> minimal = true;
-    this -> colorize = true;
     this -> border_pattern = DEFAULT_BORDER;
 }
 
@@ -105,38 +106,100 @@ OriginalPost::toggleIndentReplies()
     return this -> indent_replies;
 }
 
+bool
+OriginalPost::isColorized()
+{
+    return this -> colorize;
+}
+
 ostream&
 operator << (ostream& os, const OriginalPost& OP)
 {
-    size_t count, reply_count;
+    size_t count, reply_count, reps;
     PostStream out(os);
+    string border;
 
-    if(OP.colorize)
-        out << YELLOW_FG;
-
-    out << "No. " << OP.info["no"] << endl;
-    out << "Name: " << OP.info["name"].asString() << endl;
-    out << "Posted" <<  OP.info["now"].asString() << endl;
-
-    if( OP.info.isMember("trip"))
-        out << "Tripcode: " << OP.info["trip"].asString() << endl;
-    if( OP.info.isMember("sub"))
-        out << "Subject:" << OP.info["sub"].asString() << endl;
-    if( OP.info.isMember("com"))
-        out << "Comment: " << OP.info["com"].asString() << endl;
+    out.indent(0);
+    border = "";
     reply_count = OP.info["replies"].asInt();
-    out << reply_count << " replies/" 
-        << OP.info["images"] << " Images" << endl;
-    if (OP.colorize)
-        out << GREEN_FG;
+    if(OP.colorize)
+    {
+        out << RED_FG 
+            << "No. "  
+            << YELLOW_FG
+            << OP.info["no"] 
+            << endl;
+        out << RED_FG 
+            << "Name: " 
+            << YELLOW_FG
+            << OP.info["name"].asString() 
+            << endl;
+        out << RED_FG 
+            << "Posted: " 
+            << YELLOW_FG
+            <<  OP.info["now"].asString() 
+            << endl;
+        if( OP.info.isMember("trip"))
+            out << RED_FG 
+                << "Tripcode: " 
+                << YELLOW_FG
+                << OP.info["trip"].asString() 
+                << endl;     
+        if( OP.info.isMember("sub"))
+            out << RED_FG 
+                << "Subject:" 
+                << YELLOW_FG
+                << OP.info["sub"].asString() 
+                << endl;
+        if( OP.info.isMember("com"))
+            out << RED_FG 
+                <<"Comment: " 
+                << YELLOW_FG
+                << OP.info["com"].asString() 
+                << endl;
+        out << YELLOW_FG 
+            << reply_count 
+            << RED_FG 
+            <<" Replies/" 
+            << YELLOW_FG 
+            << OP.info["images"] 
+            << RED_FG 
+            << " Images"
+            << RESET;
+    }else{
+        out << "No. " << OP.info["no"] << endl;
+        out << "Name: " << OP.info["name"].asString() << endl;
+        out << "Posted: " <<  OP.info["now"].asString() << endl;
+        if( OP.info.isMember("trip"))
+            out << "Tripcode: " << OP.info["trip"].asString() << endl;
+        if( OP.info.isMember("sub"))
+            out << "Subject:" << OP.info["sub"].asString() << endl;
+        if( OP.info.isMember("com"))
+            out <<"Comment: " << OP.info["com"].asString() << endl;
+        out << reply_count << " Replies/" << OP.info["images"] << " Images";
+    }
+    
+    out << endl;
+
     if(OP.indent_replies)
-        out.indent(5);
+        out.indent(INDENT_SIZE);
+
+    if(OP.split_replies)
+    {
+        reps = out.getPostBuf().width/ OP.border_pattern.length();
+        for(count = 0; count < reps; count++)
+            border += OP.border_pattern;
+    }
+
     for(count = 0; count < reply_count; count++)
     {
+        out << border << endl;
         out << OP.replies[count];
-        out << endl;
+        out << RESET << endl;
     }
+
     if(OP.colorize)
         out << RESET;
+
     return os;
 }

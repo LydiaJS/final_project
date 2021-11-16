@@ -11,6 +11,7 @@ Reply:
     public Post
 {
     private:
+        friend OriginalPost;
         OriginalPost const *OP;
     public:
         friend ostream& operator << (ostream&, const Reply&);
