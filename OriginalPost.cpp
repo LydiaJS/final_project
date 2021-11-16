@@ -57,7 +57,11 @@ OriginalPost::setFormat(bool in_format)
 void
 OriginalPost::setColorize(bool in_colorize)
 {
-    this -> colorize = in_colorize;
+   int count, reply_count;
+   reply_count = this -> info["replies"].asInt();
+   this -> colorize = in_colorize;
+   for(count = 0; count <  reply_count; count++)
+       this -> replies[count].colorize = this -> colorize;
 }
 
 void
@@ -88,7 +92,11 @@ OriginalPost::toggleFormat()
 bool
 OriginalPost::toggleColorize()
 {
+    int count, reply_count;
+    reply_count = this -> info["replies"].asInt();
     this -> colorize = ! this -> colorize;
+    for(count = 0; count <  reply_count; count++)
+        this -> replies[count].colorize = this -> colorize;
     return this -> colorize;
 }
 
