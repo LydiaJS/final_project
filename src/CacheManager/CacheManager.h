@@ -9,7 +9,7 @@
 #include <sstream>
 #include <sys/stat.h>
 
-#define REFRESH_COOLDOWN 100
+#define REFRESH_COOLDOWN 1
 #define FILEEXISTS(_path_) (access(_path_.c_str(), F_OK) != -1)
 
 using namespace std;
