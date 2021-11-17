@@ -1,6 +1,6 @@
-#include "OriginalPost.h"
-#include "Reply.h"
-#include "CacheManager.h"
+#include "Posts/OriginalPost.h"
+#include "Posts/Reply.h"
+#include "CacheManager/CacheManager.h"
 #include <fstream>
 #include <iostream>
 #include <jsoncpp/json/value.h>

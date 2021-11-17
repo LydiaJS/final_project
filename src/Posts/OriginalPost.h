@@ -3,7 +3,7 @@
 
 #include "Post.h"
 #include "Reply.h"
-#include "colors.h"
+#include "../colors.h"
 #include "PostStream.h"
 #define DEFAULT_BORDER "~"
 #define INDENT_SIZE 5

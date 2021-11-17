@@ -1,27 +1,33 @@
 CC = g++ -g -std=gnu++11
-OBJS = Post.o OriginalPost.o Reply.o CacheManager.o PostStream.o PostBuf.o
 
-Test: $(OBJS) Post.h OriginalPost.h Reply.h CacheManager.h
-	$(CC) -o test test.cpp $(OBJS) -lcurl -ljsoncpp
+OBJS = src/build/Post.o \
+	   src/build/OriginalPost.o \
+	   src/build/Reply.o \
+	   src/build/CacheManager.o \
+	   src/build/PostStream.o \
+	   src/build/PostBuf.o
 
-CacheManager.o:
-	$(CC) -c -o CacheManager.o CacheManager.cpp
+DEPS =  src/Posts/Post.h \
+		src/Posts/OriginalPost.h \
+		src/Posts/Reply.h \
+		src/CacheManager/CacheManager.h
 
-Post.o:
-	$(CC) -c -o Post.o Post.cpp
+CacheManager:
+	+$(MAKE) -C src/CacheManager
 
-OriginalPost.o:
-	$(CC) -c -o OriginalPost.o OriginalPost.cpp
+Posts:
+	+$(MAKE) -C src/Posts
 
-Reply.o:
-	$(CC) -c -o Reply.o Reply.cpp
+all:
+	+$(MAKE) -C src/CacheManager
+	+$(MAKE) -C Posts
 
-PostStream.o:
-	$(CC) -c -o PostStream.o PostStream.cpp
+test:
+	+$(MAKE) -C src/CacheManager
+	+$(MAKE) -C src/Posts
+	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp
 
-PostBuf.o:
-	$(CC) -c -o PostBuf.o PostBuf.cpp
-
+.PHONY: clean
 
 clean:
-	rm $(OBJS) test *.json
+	rm src/build/*.o test

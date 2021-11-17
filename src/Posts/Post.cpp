@@ -37,12 +37,28 @@ operator << (ostream& os, const Post& post)
         trip = RED_FG + trip + post.default_color;
         com = RED_FG + com + post.default_color;
     }
-    os << no << post.info["no"] << endl;
-    os << name << post.info["name"].asString() << endl;
-    os << now << post.info["now"].asString() << endl;
+
+    no += post.info["no"].asString();
+    name += post.info["name"].asString();
+    now +=  post.info["now"].asString();
+    trip += post.info["trip"].asString();
+    com +=  post.info["com"].asString();
+
+    if(post.colorize)
+    {
+        no += RESET;
+        name += RESET;
+        now +=  RESET;
+        trip += RESET;
+        com +=  RESET;
+    }
+
+    os << no << endl;
+    os << name <<endl;
+    os << now << endl;
     if( post.info.isMember("trip"))
-        os << trip << post.info["trip"].asString() << endl;
+        os << trip << endl;
     if( post.info.isMember("com"))
-        os << com << post.info["com"].asString() << endl;
+        os << com << endl;
     return os;
 }

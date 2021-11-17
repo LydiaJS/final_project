@@ -201,9 +201,9 @@ operator << (ostream& os, const OriginalPost& OP)
 
     for(count = 0; count < reply_count; count++)
     {
-        out << border << endl;
+        if(OP.split_replies)
+            out << border << endl;
         out << OP.replies[count];
-        out << RESET << endl;
     }
 
     if(OP.colorize)
