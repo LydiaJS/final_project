@@ -13,9 +13,6 @@ Post
 {
     protected:
         Json::Value info;
-        bool empty;
-        bool colorize;
-        string default_color;
     public:
         friend ostream& operator << (ostream&, const Post&);
         Post();

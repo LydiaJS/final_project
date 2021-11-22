@@ -1,20 +1,20 @@
-#ifndef __POSTBUF_H__
-#define __POSTBUF_H__
+#ifndef __PRINTBUF_H__
+#define __PRINTBUF_H__
 
 #include <iostream>
 #include <iomanip>
 #include <streambuf>
 
 class
-PostBuf:
+PrintBuf:
     public std::streambuf
 {
     private:
         typedef std::basic_string<char_type> string;
         int_type overflow(int_type);
     public:
-        PostBuf(int,std::streambuf*);
-        ~PostBuf();
+        PrintBuf(int,std::streambuf*);
+        ~PrintBuf();
         void set_indent(int);
     
     size_t indent_width,

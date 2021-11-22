@@ -1,6 +1,6 @@
-#include "PostBuf.h"
+#include "PrintBuf.h"
 
-PostBuf::PostBuf(int w, std::streambuf* s):
+PrintBuf::PrintBuf(int w, std::streambuf* s):
     indent_width(0),
     def_width(w),
     width(w),
@@ -8,13 +8,13 @@ PostBuf::PostBuf(int w, std::streambuf* s):
     count(0)
 {}
 
-PostBuf::~PostBuf()
+PrintBuf::~PrintBuf()
 {
     overflow('\n');
 }
 
 void
-PostBuf::set_indent(int w)
+PrintBuf::set_indent(int w)
 {
     if (w == 0)
     {
@@ -30,8 +30,8 @@ PostBuf::set_indent(int w)
     }
 }
 
-PostBuf::int_type
-PostBuf::overflow(int_type c)
+PrintBuf::int_type
+PrintBuf::overflow(int_type c)
 {
     if(traits_type::eq_int_type(traits_type::eof(),c))
         return traits_type::not_eof(c);

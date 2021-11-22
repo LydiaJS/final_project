@@ -1,10 +1,16 @@
-#include "Posts/OriginalPost.h"
-#include "Posts/Reply.h"
+#include "ImageBoards/OriginalPost.h"
+#include "ImageBoards/Reply.h"
+#include "ImageBoards/Thread.h"
+#include "ImageBoards/Catalog.h"
 #include "CacheManager/CacheManager.h"
+#include "UI/PrintStream.h"
+#include "UI/Console.h"
 #include <fstream>
 #include <iostream>
 #include <jsoncpp/json/value.h>
 #include <string>
+
+using namespace std;
 
 void
 testCacheManager(string board)
@@ -18,69 +24,55 @@ testCacheManager(string board)
 }
 
 void
-testOriginalPost(string board, unsigned int thread_no)
+testThread(const string& board, const unsigned int thread)
 {
-    ifstream thread_file;
+    PrintStream out(cout);
     CacheManager CM;
-    const string home = getenv("HOME");
-    string file_path = home + "/" 
-            + ".final_project/cache/"
-            + board
-            +"/thread/" 
-            + to_string(thread_no) + ".json";
-    if(CM.prepCache(board,thread_no))
-        cout << "CacheManager should be working as expected" << endl;
-    cout << file_path << endl;
-    if(FILEEXISTS(file_path))
-        cout << "Actually cached the file!" << endl;
-    Json::Value thread_info;
-    thread_file.open(file_path.c_str(), std::ios::binary);
-    thread_file >> thread_info;
-    thread_file.close();
-    OriginalPost OP(thread_info);
-    cout << OP;
+    Thread test_thread;
+    Json::Value content;
+    string content_path;
+    ifstream content_stream;
+    if(CM.prepCache(board, thread))
+    {
+        content_path = CM.getContentPath(board, thread);
+        content_stream.open(content_path.c_str(), std::ios::binary);
+        if(content_stream.good())
+        {
+            content_stream >> content;
+            test_thread = Thread(content);
+            out << test_thread << endl;
+            return;
+        }
+    }
+    cout << "Something went wrong!" << endl;
 }
 
-int
-getThreadNo(string board, unsigned int page, unsigned int thread)
+void
+testCatalog()
 {
-    int thread_no;
-    ifstream thread_file;
+    PrintStream out(cout);
     CacheManager CM;
-    const string home = getenv("HOME");
-    string file_path = home + "/" 
-            + ".final_project/cache/"
-            + board
-            +"/threads.json";
-    CM.prepCache(board,0);
-    Json::Value thread_info;
-    thread_file.open(file_path.c_str(), std::ios::binary);
-    thread_file >> thread_info;
-    thread_file.close();
-    thread_no = thread_info[page]["threads"][thread]["no"].asInt();
-    cout << thread_no << endl;
-    return thread_no;
-
+    Catalog test_catalog;
+    Json::Value content;
+    string content_path;
+    ifstream content_stream;
+    content_path = "testCatalog.json";
+    content_stream.open(content_path.c_str(), std::ios::binary);
+    if(content_stream.good())
+    {
+        content_stream >> content;
+        test_catalog = Catalog(content);
+        out << test_catalog;
+        return;
+    }
+    cout << "Something went wrong!" << endl;
 }
 
 int
 main(int argc, char **argv)
 {
-    if(argc > 1)
-    {
-        string board = string(argv[1]);
-        int page = atoi(argv[2]);
-        int thread = atoi(argv[3]);
-        unsigned int thread_no;
-        thread_no = getThreadNo(board, page,thread);
-        testOriginalPost(board,thread_no);
-    }
-    else
-    {
-        // Sticky thread on /g/ with the most tame content managable
-        testCacheManager("g");
-        testOriginalPost("g",76759434);
-    }
-    //testCacheManager();
+   Console console;
+   console.loop();
+   //testThread("lgbt",23241848); 
+   //testCatalog();
 }
-

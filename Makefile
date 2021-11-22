@@ -3,29 +3,46 @@ CC = g++ -g -std=gnu++11
 OBJS = src/build/Post.o \
 	   src/build/OriginalPost.o \
 	   src/build/Reply.o \
+	   src/build/Thread.o \
+	   src/build/Catalog.o \
 	   src/build/CacheManager.o \
-	   src/build/PostStream.o \
-	   src/build/PostBuf.o
+	   src/build/PrintStream.o \
+	   src/build/PrintBuf.o \
+	   src/build/Console.o \
+	   src/build/Client.o
 
-DEPS =  src/Posts/Post.h \
-		src/Posts/OriginalPost.h \
-		src/Posts/Reply.h \
-		src/CacheManager/CacheManager.h
+DEPS =  src/ImageBoards/Post.h \
+		src/ImageBoards/OriginalPost.h \
+		src/ImageBoards/Reply.h \
+		src/ImageBoards/Thread.h \
+		src/ImageBoards/Catalog.h \
+		src/CacheManager/CacheManager.h \
+		src/UI/Console.h \
+		src/Client/Client.h
 
 CacheManager:
 	+$(MAKE) -C src/CacheManager
 
-Posts:
-	+$(MAKE) -C src/Posts
+ImageBoards:
+	+$(MAKE) -C src/ImageBoards
 
+UI:
+	+$(MAKE) -C src/UI
+
+Client:
+	+$(MAKE) -C src/Client
 all:
 	+$(MAKE) -C src/CacheManager
-	+$(MAKE) -C Posts
+	+$(MAKE) -C src/ImageBoards
+	+$(MAKE) -C src/Client
+	+$(MAKE) -C src/UI
 
 test:
 	+$(MAKE) -C src/CacheManager
-	+$(MAKE) -C src/Posts
-	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp
+	+$(MAKE) -C src/ImageBoards
+	+$(MAKE) -C src/Client
+	+$(MAKE) -C src/UI
+	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
 
 .PHONY: clean
 

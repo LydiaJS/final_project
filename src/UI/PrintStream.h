@@ -1,7 +1,7 @@
-#ifndef __POST_STREAM_H__
-#define __POST_STREAM_H__
+#ifndef __PRINT_STREAM_H__
+#define __PRINT_STREAM_H__
 
-#include "PostBuf.h"
+#include "PrintBuf.h"
 
 #include <iostream>
 #include <iomanip>
@@ -11,15 +11,15 @@
 #include <unistd.h>
 
 class
-PostStream:
+PrintStream:
     public std::ostream
 {
-    PostBuf buf;
+    PrintBuf buf;
     public:
-        PostStream(size_t, std::ostream&);
-        PostStream(std::ostream&);
-        PostStream& indent(int);
-        PostBuf& getPostBuf();
+        PrintStream(size_t, std::ostream&);
+        PrintStream(std::ostream&);
+        PrintStream& indent(int);
+        PrintBuf& getPrintBuf();
     private:
         static int getWindowSize();
         static int window_size;
