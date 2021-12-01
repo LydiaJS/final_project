@@ -15,6 +15,7 @@ Thread
         size_t num_replies;
     public:
         friend ostream& operator<< (ostream&, const Thread&);
+        string toString();
         Thread();
         Thread(const Json::Value&);
         OriginalPost getOP();

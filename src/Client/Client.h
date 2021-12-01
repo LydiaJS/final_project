@@ -5,6 +5,7 @@
 #include "../ImageBoards/OriginalPost.h"
 #include "../ImageBoards/Reply.h"
 #include "../ImageBoards/Thread.h"
+#include "../ImageBoards/Catalog.h"
 #include "../UI/PrintStream.h"
 #include "../Common/colors.h"
 #include "../Common/Target.h"
@@ -28,8 +29,8 @@ Client
         string getPage();
         void goToBoardList();
         void goToBoard(string);
-        void goToCatalog();
-        void goToThread(unsigned int thread_no);
+        void goToCatalog(string);
+        void goToThread(unsigned int);
         Client();
 };
 

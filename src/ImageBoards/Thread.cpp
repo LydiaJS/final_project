@@ -45,3 +45,17 @@ operator << (ostream& os, const Thread& thread)
         os << *replyPtr++;
     return os;
 }
+
+string
+Thread::toString()
+{
+    string thread_string;
+    thread_string = "";
+    Reply *replyPtr, *lastReply;
+    replyPtr = this -> replies;
+    lastReply = this -> replies + this -> num_replies;
+    thread_string += this -> OP.toString();
+    while(replyPtr != lastReply)
+        thread_string += (*replyPtr++).toString();
+    return thread_string;
+}

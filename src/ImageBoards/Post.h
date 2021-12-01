@@ -15,6 +15,7 @@ Post
         Json::Value info;
     public:
         friend ostream& operator << (ostream&, const Post&);
+        string toString();
         Post();
         Post(const Json::Value&);
 };

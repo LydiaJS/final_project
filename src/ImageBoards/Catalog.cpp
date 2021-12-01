@@ -70,3 +70,24 @@ operator <<
     return os;
 }
 
+string
+Catalog::toString()
+{
+    string catalog_string;
+    catalog_string = "";
+    size_t count, subcount;
+    catalog_string += to_string(this -> page_count)
+                   + "\n";
+    for(count = 0; count < this -> page_count; count++)
+    {
+        catalog_string += "Page: " 
+                       + to_string(this ->pages[count].page) 
+                       + "\n";
+        for(subcount = 0;subcount < this ->pages[count].thread_count;subcount++)
+        {
+            catalog_string += this ->pages[count].threads[subcount].toString();
+        }
+    }
+    return catalog_string;
+}
+

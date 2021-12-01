@@ -23,6 +23,7 @@ Catalog
         Json::Value info;
     public:
         friend ostream& operator << (ostream&, const Catalog&);
+        string toString();
         Catalog();
         Catalog(const Json::Value&);
 };

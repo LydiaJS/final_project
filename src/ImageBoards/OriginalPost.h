@@ -13,6 +13,7 @@ OriginalPost:
     private:
     public:
         friend ostream& operator << (ostream&, const OriginalPost&);
+        string toString();
         OriginalPost();
         OriginalPost(const Json::Value&);
 };
