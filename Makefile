@@ -8,7 +8,6 @@ OBJS = src/build/Post.o \
 	   src/build/CacheManager.o \
 	   src/build/PrintStream.o \
 	   src/build/PrintBuf.o \
-	   src/build/Console.o \
 	   src/build/Client.o
 
 DEPS =  src/ImageBoards/Post.h \
@@ -17,8 +16,9 @@ DEPS =  src/ImageBoards/Post.h \
 		src/ImageBoards/Thread.h \
 		src/ImageBoards/Catalog.h \
 		src/CacheManager/CacheManager.h \
-		src/UI/Console.h \
-		src/Client/Client.h
+		src/Client/Client.h \
+		src/Common/colors.h \
+		src/Common/Target.h
 
 CacheManager:
 	+$(MAKE) -C src/CacheManager

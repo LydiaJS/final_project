@@ -1,11 +1,9 @@
 CC = g++ -g -std=gnu++11
 
-OBJS = Console.o \
-	   PrintBuf.o \
+OBJS = PrintBuf.o \
 	   PrintStream.o
 
-HEADERS = Console.h \
-		  PrintBuf.h \
+HEADERS = PrintBuf.h \
 		  PrintStream.h
 
 %.o: %.cpp

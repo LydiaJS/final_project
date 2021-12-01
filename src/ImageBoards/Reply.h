@@ -2,7 +2,6 @@
 #define __REPLY_H__
 
 #include "Post.h"
-#include "../colors.h"
 using namespace std;
 class OriginalPost;
 

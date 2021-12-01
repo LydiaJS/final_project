@@ -4,10 +4,12 @@ using namespace std;
 
 Client::Client():
     CM()
-{}
+{
+    this -> target.type = BOARD_LIST;
+}
 
 string
-Client::currentPage()
+Client::getCurrentPage()
 {
     string page;
     switch(this -> target.type)
@@ -33,3 +35,5 @@ Client::currentPage()
     }
     return page;
 }
+
+

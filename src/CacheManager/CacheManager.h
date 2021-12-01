@@ -9,6 +9,7 @@
 #include <sstream>
 #include <sys/stat.h>
 #include <iostream>
+#include "../Common/Target.h"
 
 #define REFRESH_COOLDOWN 1
 #define FILEEXISTS(_path_) (access(_path_.c_str(), F_OK) != -1)
@@ -25,24 +26,6 @@ CacheManagerState
     NEVER_REFRESH = 0,
     FORCE_REFRESH = 1,
     REFRESH = 2
-};
-
-enum 
-TargetType
-{
-    BOARD_LIST = 1,
-    THREAD_LIST = 2,
-    CATALOG = 3,
-    THREAD = 4,
-    MEDIA = 5
-};
-
-struct
-Target
-{
-    TargetType type;
-    unsigned int thread;
-    string board, filename, ext;
 };
 
 class

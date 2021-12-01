@@ -3,7 +3,6 @@
 
 #include "Post.h"
 #include "Reply.h"
-#include "../colors.h"
 
 using namespace std;
 

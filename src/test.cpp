@@ -4,7 +4,6 @@
 #include "ImageBoards/Catalog.h"
 #include "CacheManager/CacheManager.h"
 #include "UI/PrintStream.h"
-#include "UI/Console.h"
 #include <fstream>
 #include <iostream>
 #include <jsoncpp/json/value.h>
@@ -82,8 +81,6 @@ testCatalog()
 int
 main(int argc, char **argv)
 {
-   //Console console;
-   //console.loop();
    testThread("g",76759434); 
-   testCatalog();
+   //testCatalog();
 }
