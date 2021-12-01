@@ -8,14 +8,13 @@ Catalog::Catalog()
     this -> pages = NULL;
 }
 
-Catalog::Catalog(const Json::Value& content)
+Catalog::Catalog
+(const Json::Value& content)
 {
     int count, subcount, deepcount, page_count, thread_count, reply_count;
     Page *pagePtr, *lastPage;
     Thread *threadPtr, *lastThread;
-
     Json::Value page_content, thread_content, preview_content;
-
     page_count = content.size();
     this -> pages = new Page[page_count];
     pagePtr = this -> pages;
@@ -55,7 +54,8 @@ Catalog::Catalog(const Json::Value& content)
 }
 
 ostream&
-operator << (ostream& os, const Catalog& cat)
+operator << 
+(ostream& os, const Catalog& cat)
 {
     size_t count, subcount;
     os << cat.page_count << "\n";

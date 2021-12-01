@@ -25,8 +25,8 @@ Console::loop()
         line = readline(this -> prompt);
         if(!line) break;
         if(*line) add_history(line);
-        if(!this -> client.parse_command(line,this -> out))
-            quit = true;
+        //if(!this -> client.parse_command(line,this -> out))
+            //quit = true;
         free(line);
     } while(!quit);
     return true;

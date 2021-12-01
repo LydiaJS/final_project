@@ -4,10 +4,15 @@
 CacheManager::CacheManager()
 {
     this -> state = REFRESH;
-    this -> cache_dir = string(getenv("HOME")) + "/." PROGNAME "/cache";
+    this -> cache_dir = string(getenv("HOME")) 
+                      + "/." PROGNAME "/cache";
+
     if(!dirExists(this -> cache_dir))
         createDir(this -> cache_dir);
-    this -> cache_log = this -> cache_dir + "/.cache.log";
+
+    this -> cache_log = this -> cache_dir 
+                      + "/.cache.log";
+
     if(!FILEEXISTS(this -> cache_log))
     {
         this -> log.open( this -> cache_log, std::fstream::out);
@@ -24,37 +29,117 @@ CacheManager::CacheManager()
 }
 
 void
-CacheManager::setState(const CacheManagerState in_state)
+CacheManager::setState
+(const CacheManagerState in_state)
 {
     this -> state = in_state;
 }
 
+inline bool
+CacheManager::dirExists
+(const string &path)
+{
+    struct stat st;
+    return (!stat(path.c_str(), &st) && (st.st_mode & S_IFDIR));
+}
+
+bool
+CacheManager::createDir
+(const string& path)
+{
+    stringstream path_stream;
+    string segment, current_path;
+    current_path = "";
+    path_stream.str(path);
+    while(std::getline(path_stream, segment, '/'))
+    {
+        if(!dirExists(current_path += "/" + segment))
+            mkdir(current_path.c_str(),
+                    S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
+    }
+    return dirExists(path);
+}
+
 string
-CacheManager::getContentPath(const string& board, const unsigned int thread)
+CacheManager::getPath
+(const Target &target)
 {
     string file_path;
-    file_path = "/" + board;
-    if(!thread)
-        file_path += "/threads.json";
-    else
-        file_path += "/thread/" + std::to_string(thread) + ".json";
+    file_path = "/";
+    
+    switch(target.type)
+    {
+        case THREAD:
+            file_path += target.board
+                       + "/thread/" 
+                       + std::to_string(target.thread)
+                       + ".json";
+            break;
+        case THREAD_LIST:
+            file_path += target.board
+                       + "/threads.json";
+            break;
+        case CATALOG:
+            file_path += target.board 
+                       + "/catalog.json";
+            break;
+        case BOARD_LIST:
+            file_path += "boards.json";
+            break;
+        case MEDIA:
+            file_path += target.board
+                       + "/"
+                       + target.filename
+                       + "."
+                       + target.ext;
+            break;
+    }
     return this -> cache_dir + file_path;
 }
 
 string
-CacheManager::getURL(const string& board, const unsigned int thread)
+CacheManager::getURL
+(const Target &target)
 {
-    string file_path;
-    file_path = "/" + board;
-    if(!thread)
-        file_path += "/threads.json";
-    else
-        file_path += "/thread/" + std::to_string(thread) + ".json";
-    return API_URL + file_path;
+    string url;
+    switch(target.type)
+    {
+        case THREAD:
+            url = API_URL;
+            url += target.board
+                + "/thread/" 
+                + std::to_string(target.thread)
+                + ".json";
+            break;
+        case THREAD_LIST:
+            url = API_URL;
+            url += target.board
+                + "/threads.json";
+            break;
+        case CATALOG:
+            url = API_URL;
+            url += target.board 
+                + "/catalog.json";
+            break;
+        case BOARD_LIST:
+            url = API_URL;
+            url += "boards.json";
+            break;
+        case MEDIA:
+            url = MEDIA_URL;
+            url += target.board
+                + "/"
+                + target.filename
+                + "."
+                + target.ext;
+            break;
+    }
+    return url;
 }
 
 bool
-CacheManager::cacheFile(const string& url, const string &cache_dir)
+CacheManager::cacheFile
+(const string& url, const string &cache_dir)
 {
     CURL *curl;
     FILE *cache;
@@ -64,7 +149,6 @@ CacheManager::cacheFile(const string& url, const string &cache_dir)
         cache = fopen(cache_dir.c_str(), "wb");
         if(!cache) 
             return false;
-
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 5);
         curl_easy_setopt(curl, CURLOPT_COOKIEFILE, "");
@@ -87,11 +171,12 @@ CacheManager::cacheFile(const string& url, const string &cache_dir)
 }
 
 bool
-CacheManager::prepCache(const string& board,const unsigned int thread)
+CacheManager::prepCache
+(const Target& target)
 {
     string json_file, url;
-    url = getURL(board, thread);
-    json_file = getContentPath(board, thread);
+    url = getURL(target);
+    json_file = getPath(target);
     createDir(json_file.substr(0,json_file.find_last_of("/")));
     switch(this -> state)
     {
@@ -107,27 +192,4 @@ CacheManager::prepCache(const string& board,const unsigned int thread)
                 sleep(1);
     }
     return cacheFile(url, json_file) || FILEEXISTS(json_file);
-}
-
-inline bool
-CacheManager::dirExists(const string &path)
-{
-    struct stat st;
-    return (!stat(path.c_str(), &st) && (st.st_mode & S_IFDIR));
-}
-
-bool
-CacheManager::createDir(const string& path)
-{
-    stringstream path_stream;
-    string segment, current_path;
-    current_path = "";
-    path_stream.str(path);
-    while(std::getline(path_stream, segment, '/'))
-    {
-        if(!dirExists(current_path += "/" + segment))
-            mkdir(current_path.c_str(),
-                    S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-    }
-    return dirExists(path);
 }

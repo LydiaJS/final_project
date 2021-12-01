@@ -16,8 +16,11 @@ void
 testCacheManager(string board)
 {
     CacheManager CM;
-    const unsigned int thread = 0;
-    if(CM.prepCache(board, thread))
+    Target target;
+    target.type = THREAD_LIST;
+    target.board = board;
+    target.thread = 0;
+    if(CM.prepCache(target))
         cout << "It should work" << endl;
     else
         cout << "Somethings wrong" << endl;
@@ -26,15 +29,19 @@ testCacheManager(string board)
 void
 testThread(const string& board, const unsigned int thread)
 {
+    Target target;
+    target.board = board;
+    target.thread = thread;
+    target.type = THREAD;
     PrintStream out(cout);
     CacheManager CM;
     Thread test_thread;
     Json::Value content;
     string content_path;
     ifstream content_stream;
-    if(CM.prepCache(board, thread))
+    if(CM.prepCache(target))
     {
-        content_path = CM.getContentPath(board, thread);
+        content_path = CM.getPath(target);
         content_stream.open(content_path.c_str(), std::ios::binary);
         if(content_stream.good())
         {
@@ -56,7 +63,11 @@ testCatalog()
     Json::Value content;
     string content_path;
     ifstream content_stream;
-    content_path = "testCatalog.json";
+    Target target;
+    target.type = CATALOG;
+    target.board = "g";
+    CM.prepCache(target);
+    content_path = CM.getPath(target);
     content_stream.open(content_path.c_str(), std::ios::binary);
     if(content_stream.good())
     {
@@ -71,8 +82,8 @@ testCatalog()
 int
 main(int argc, char **argv)
 {
-   Console console;
-   console.loop();
-   //testThread("lgbt",23241848); 
-   //testCatalog();
+   //Console console;
+   //console.loop();
+   testThread("g",76759434); 
+   testCatalog();
 }

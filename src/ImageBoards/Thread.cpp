@@ -13,12 +13,12 @@ Thread::Thread()
 Thread::Thread(const Json::Value& content):
     OP(content["posts"][0])
 {
-    int count, reply_count;
+    int reply_count;
     reply_count = content["posts"].size() - 1;
     this -> num_replies = static_cast<size_t>(reply_count);
     this -> replies = new Reply[reply_count];
-    for(count = 0; count < reply_count; count++)
-        replies[count] = Reply(content["posts"][count + 1]);
+    while(--reply_count)
+        replies[reply_count] = Reply(content["posts"][reply_count + 1]);
 }
 
 OriginalPost

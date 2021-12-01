@@ -8,6 +8,7 @@
 #include "../ImageBoards/Thread.h"
 #include "../UI/PrintStream.h"
 #include "../colors.h"
+
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -19,13 +20,10 @@ Client
 {
     private:
         CacheManager CM;
-        string board;
-        unsigned int thread_no;
-        unsigned char page;
-        void enterThread(unsigned int);
-        Json::Value getContent();
+        Target target;
+        Json::Value getContent(); 
     public:
-        bool parse_command(const char*, PrintStream&);
+        string currentPage();
         Client();
 };
 
