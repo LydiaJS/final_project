@@ -42,7 +42,7 @@ test:
 	+$(MAKE) -C src/ImageBoards
 	+$(MAKE) -C src/Client
 	+$(MAKE) -C src/UI
-	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
+	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline -lncurses
 
 .PHONY: clean
 
