@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <jsoncpp/json/json.h>
+#include "../UI/PrintStream.h"
 #include "OriginalPost.h"
 #include "Reply.h"
 
@@ -15,6 +16,7 @@ Thread
         size_t num_replies;
     public:
         friend ostream& operator<< (ostream&, const Thread&);
+        friend PrintStream& operator<< (PrintStream&, const Thread&);
         string toString();
         Thread();
         Thread(const Json::Value&);

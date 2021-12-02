@@ -46,6 +46,20 @@ operator << (ostream& os, const Thread& thread)
     return os;
 }
 
+PrintStream&
+operator << (PrintStream& ps, const Thread& thread)
+{
+    Reply *replyPtr, *lastReply;
+    replyPtr = thread.replies;
+    lastReply = thread.replies + thread.num_replies;
+    ps << thread.OP;
+    ps.indent(5);
+    while(replyPtr != lastReply)
+        ps << *replyPtr++;
+    ps.indent(-5);
+    return ps;
+}
+
 string
 Thread::toString()
 {

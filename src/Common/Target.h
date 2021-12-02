@@ -18,6 +18,7 @@ struct
 Target
 {
     TargetType type;
+    unsigned char page;
     unsigned int thread;
     string board, filename, ext;
 };

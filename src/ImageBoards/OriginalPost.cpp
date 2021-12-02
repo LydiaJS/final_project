@@ -18,26 +18,19 @@ OriginalPost::toString()
     OP_string = "";
     for(count = 0; count < 6; count++)
         if(this -> info.isMember(keys[count]))
-            OP_string += RED_FG 
-                + fields[count] 
-                + YELLOW_FG
+            OP_string += fields[count] 
                 + this -> info[keys[count]].asString()
-                +  RESET 
                 +  '\n';
 
-    OP_string += YELLOW_FG 
-        + this -> info["replies"].asString() 
-        + RED_FG 
+    OP_string += this -> info["replies"].asString() 
         + " Replies/" 
-        + YELLOW_FG 
         + this -> info["images"].asString() 
-        + RED_FG 
         + " Images" 
-        + RESET 
         + '\n' ;
     return OP_string;
 
 }
+
 ostream&
 operator << (ostream& os, const OriginalPost& OP)
 {
@@ -66,6 +59,50 @@ operator << (ostream& os, const OriginalPost& OP)
           RESET +
           '\n' ;
     return os;
+}
+
+PrintStream&
+operator << (PrintStream& ps, const OriginalPost& OP)
+{
+    size_t count;
+    string fields[6] = {"No. ", "Name: ", "Posted: ",
+                        "Tripcode: ","Subject: ", "Comment: "};
+    string keys[6] = {"no","name","now",
+                      "trip","sub","com"};
+    for(count = 0; count < 6; count++)
+        if(OP.info.isMember(keys[count]))
+        {
+            ps << RED_FG + 
+                  fields[count] + 
+                  YELLOW_FG;
+            if(keys[count] == "com")
+            {
+                ps << '\n';
+                ps.indent(5);
+                ps << OP.info[keys[count]].asString() +
+                    RESET + 
+                    '\n';
+                ps.indent(-5);
+            }
+            else
+            {
+                 ps << OP.info[keys[count]].asString() +
+                    RESET + 
+                    '\n';
+            }
+        }
+
+    ps << YELLOW_FG + 
+          OP.info["replies"].asString() + 
+          RED_FG + 
+          " Replies/" +
+          YELLOW_FG +
+          OP.info["images"].asString() + 
+          RED_FG +
+          " Images" +
+          RESET +
+          '\n' ;
+    return ps;
 }
 
 

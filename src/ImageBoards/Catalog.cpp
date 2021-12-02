@@ -70,6 +70,29 @@ operator <<
     return os;
 }
 
+PrintStream&
+operator << 
+(PrintStream& ps, const Catalog& cat)
+{
+    size_t count, subcount;
+    for(count = 0; count < cat.page_count; count++)
+        for(subcount = 0;subcount < cat.pages[count].thread_count;subcount++)
+            ps << cat.pages[count].threads[subcount];
+    return ps;
+}
+
+PrintStream&
+Catalog::showPage
+(PrintStream& ps, unsigned char page)
+{
+    size_t count;
+    for(count = 0; count < this -> pages[page].thread_count;++count)
+    {
+        ps << this -> pages[page].threads[count];
+    }
+    return ps;
+}
+
 string
 Catalog::toString()
 {
@@ -78,15 +101,17 @@ Catalog::toString()
     size_t count, subcount;
     catalog_string += to_string(this -> page_count)
                    + "\n";
-    for(count = 0; count < this -> page_count; count++)
+    count = this -> page_count;
+    while(--count)
     {
-        catalog_string += "Page: " 
+        catalog_string = "Page: " 
                        + to_string(this ->pages[count].page) 
-                       + "\n";
-        for(subcount = 0;subcount < this ->pages[count].thread_count;subcount++)
-        {
-            catalog_string += this ->pages[count].threads[subcount].toString();
-        }
+                       + "\n"
+                       + catalog_string;
+        subcount = this -> pages[count].thread_count;
+        while(--subcount)
+            catalog_string = this ->pages[count].threads[subcount].toString()
+                             + catalog_string;
     }
     return catalog_string;
 }

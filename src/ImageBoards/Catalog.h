@@ -2,6 +2,7 @@
 #define __CATALOG_H__
 
 #include "Thread.h"
+#include "../UI/PrintStream.h"
 
 #include <jsoncpp/json/json.h>
 #include <ostream>
@@ -23,6 +24,8 @@ Catalog
         Json::Value info;
     public:
         friend ostream& operator << (ostream&, const Catalog&);
+        friend PrintStream& operator << (PrintStream&, const Catalog&);
+        PrintStream& showPage(PrintStream&, unsigned char);
         string toString();
         Catalog();
         Catalog(const Json::Value&);

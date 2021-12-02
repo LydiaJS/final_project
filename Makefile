@@ -8,7 +8,8 @@ OBJS = src/build/Post.o \
 	   src/build/CacheManager.o \
 	   src/build/PrintStream.o \
 	   src/build/PrintBuf.o \
-	   src/build/Client.o
+	   src/build/Client.o \
+	   src/build/Interface.o
 
 DEPS =  src/ImageBoards/Post.h \
 		src/ImageBoards/OriginalPost.h \
@@ -17,6 +18,7 @@ DEPS =  src/ImageBoards/Post.h \
 		src/ImageBoards/Catalog.h \
 		src/CacheManager/CacheManager.h \
 		src/Client/Client.h \
+		src/UI/Interface.h \
 		src/Common/colors.h \
 		src/Common/Target.h
 
@@ -31,20 +33,31 @@ UI:
 
 Client:
 	+$(MAKE) -C src/Client
+
+TBB:
+	+$(MAKE) -C src/CacheManager
+	+$(MAKE) -C src/ImageBoards
+	+$(MAKE) -C src/Client
+	+$(MAKE) -C src/UI
+	$(CC) -o tbb src/tbb.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
+
 all:
 	+$(MAKE) -C src/CacheManager
 	+$(MAKE) -C src/ImageBoards
 	+$(MAKE) -C src/Client
 	+$(MAKE) -C src/UI
+	$(CC) -o tbb src/tbb.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
 
 test:
 	+$(MAKE) -C src/CacheManager
 	+$(MAKE) -C src/ImageBoards
 	+$(MAKE) -C src/Client
 	+$(MAKE) -C src/UI
-	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline -lncurses
+	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
 
-.PHONY: clean
+default: TBB
+
 
 clean:
-	rm src/build/*.o test
+	rm src/build/*.o test tbb
+.PHONY: clean

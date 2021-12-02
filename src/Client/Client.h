@@ -25,12 +25,13 @@ Client
         Json::Value getContent(); 
     public:
         TargetType getCurrentTarget();
-        string getCurrentPage();
-        string getPage();
+        PrintStream& showCurrentPage(PrintStream&);
+        PrintStream& showPage(PrintStream&);
         void goToBoardList();
         void goToBoard(string);
         void goToCatalog(string);
         void goToThread(unsigned int);
+        void goToPage(unsigned char);
         Client();
 };
 

@@ -5,6 +5,7 @@
 #include <ostream>
 #include <jsoncpp/json/json.h>
 #include "../Common/colors.h"
+#include "../UI/PrintStream.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ Post
         Json::Value info;
     public:
         friend ostream& operator << (ostream&, const Post&);
+        friend PrintStream& operator << (PrintStream&, const Post&);
         string toString();
         Post();
         Post(const Json::Value&);

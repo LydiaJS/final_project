@@ -6,6 +6,7 @@ Client::Client():
     CM()
 {
     this -> target.type = BOARD_LIST;
+    this -> target.page = 0;
 }
 
 Json::Value
@@ -27,80 +28,101 @@ Client::getContent()
     return content;
 }
 
-string
-Client::getCurrentPage()
+PrintStream&
+Client::showCurrentPage
+(PrintStream& ps)
 {
-    string page;
     switch(this -> target.type)
     {
         case THREAD_LIST:
-            page = this -> target.board;
+            ps << RED_FG
+               << "/"
+               << this -> target.board
+               << "/ Page: "
+               << YELLOW_FG
+               << (unsigned int) this -> target.page
+               << RESET;
             break;
         case CATALOG:
-            page = "/";
-            page += this -> target.board;
-            page += "/ (catalog)";
+            ps << RED_FG
+               << "/"
+               << this -> target.board
+               << "/ Page:" 
+               << YELLOW_FG
+               << this -> target.page
+               << " (catalog)"
+               << RESET;
             break;
         case THREAD:
-            page = "/";
-            page += this -> target.board;
-            page += "/ (No.";
-            page += this -> target.thread;
-            page += ")";
+            ps << RED_FG
+               << "/"
+               << this -> target.board
+               << "/"
+               << YELLOW_FG
+               << " (No."
+               << this -> target.thread
+               << ")"
+               << RESET;
             break;
         case BOARD_LIST:
-            page = "board list";
+            ps << RED_FG
+               << "board list"
+               << RESET;
             break;
     }
-    return page;
+    ps << "\n";
+    return ps;
 }
 
-string
-Client::getPage()
+PrintStream&
+Client::showPage
+(PrintStream &ps)
 {
-    string page_string, content_path;
+    string content_path;
     Json::Value content;
-    unsigned int count, subcount;
+    unsigned int count, page;
+
     content = this -> getContent();
     switch(this -> target.type)
     {
         case BOARD_LIST:
-            page_string = "";
             count = content["boards"].size();
+            ps << YELLOW_FG;
             while(--count)
-                page_string = content["boards"][count]["board"].asString() 
-                            + "\n"
-                            + page_string;
+                ps <<  content["boards"][count]["board"].asString()
+                   << " ";
+            ps << RESET << "\n";
             break;
         case THREAD_LIST:
-            page_string = "";
-            count = content.size();
-            while(--count)
+            page = static_cast<unsigned int>(this -> target.page);
+            count = 0;
+            while(count < content[page]["threads"].size())
             {
-                subcount = content[count]["threads"].size();
-                while(--subcount)
-                    page_string = 
-                        content[count]["threads"][subcount]["no"].asString() 
-                        + "\n"
-                        + page_string;
+                ps << RED_FG
+                   << "No."
+                   << YELLOW_FG
+                   << content[page]["threads"][count]["no"]
+                   << RESET
+                   << "\n";
+                ++count;
             }
             break;
         case CATALOG:
             {
                 Catalog catalog(content);
-                page_string = catalog.toString();
+                catalog.showPage(ps,this -> target.page);
                 break;
             }
         case THREAD:
             {
                 Thread thread(content);
-                page_string = thread.toString();
+                ps << thread;
                 break;
             }
         case MEDIA: 
             break;
     }
-    return page_string;
+    return ps;
 }
 
 void
@@ -115,6 +137,7 @@ Client::goToBoard
 {
     this -> target.type = THREAD_LIST;
     this -> target.board = board;
+    this -> target.page = 0;
 }
 
 void
@@ -123,6 +146,7 @@ Client::goToCatalog
 {
     this -> target.type = CATALOG;
     this -> target.board = board;
+    this -> target.page = 0;
 }
 
 void
@@ -131,4 +155,11 @@ Client::goToThread
 {
     this -> target.type = THREAD;
     this -> target.thread = thread;
+}
+
+void
+Client::goToPage
+(unsigned char page)
+{
+    this -> target.page = page;
 }
