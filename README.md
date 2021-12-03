@@ -5,7 +5,7 @@ in /tbb use 'make all' or 'make tbb'
 
 ### Screenshots:
 #### The welcome and help page
-![Welcome and help page](https://github.com/LydiaJS/final_project/blob/main/Screenshots/2021-12-02-230248.png?raw=true)
+![Welcome and help page](https://github.com/LydiaJS/final_project/blob/main/Screenshots/2021-12-03-173335.png?raw=true)
 #### Viewing the list of threads on a board
 ![Viewing the list of threads on a board](https://github.com/LydiaJS/final_project/blob/main/Screenshots/2021-12-03-000531.png?raw=true)
 #### Viewing a thread
