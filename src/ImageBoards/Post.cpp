@@ -11,26 +11,37 @@ Post::Post(const Json::Value& in_info)
 ostream&
 operator << (ostream& os, const Post& post)
 {
-    size_t count;
-    string fields[5] = {"No. ","Name: ","Posted: ","Tripcode: ","Comment: "};
-    string keys[5] = {"no","name","now","trip","com"};
-    for(count = 0; count < 5; count++)
+    unsigned char count;
+    string fields[6] = {"No. ","Name: ","Posted: ",
+                        "Tripcode: ","Attatched file: ","Comment: "};
+    string keys[6] = {"no","name","now","trip","filename","com"};
+    for(count = 0; count < 6; ++count)
         if(post.info.isMember(keys[count]))
-            os << RED_FG 
-               << fields[count]
-               << GREEN_FG
-               << post.info[keys[count]].asString()
-               << RESET "\n";
+        {
+            if (keys[count] == "filename")
+            {
+                os << post.info[keys[count]].asString()
+                   << post.info["ext"].asString()
+                   << RESET "\n";
+            } else {
+                os << RED_FG 
+                   << fields[count]
+                   << GREEN_FG
+                   << post.info[keys[count]].asString()
+                   << RESET "\n";
+            }
+        }
     return os;
 }
 
 PrintStream&
 operator << (PrintStream& ps, const Post& post)
 {
-    size_t count;
-    string fields[5] = {"No. ","Name: ","Posted: ","Tripcode: ","Comment: "};
-    string keys[5] = {"no","name","now","trip","com"};
-    for(count = 0; count < 5; count++)
+    unsigned char count;
+    string fields[6] = {"No. ","Name: ","Posted: ",
+                        "Tripcode: ", "Attatched file: ","Comment: "};
+    string keys[6] = {"no","name","now","trip","filename","com"};
+    for(count = 0; count < 6; ++count)
         if(post.info.isMember(keys[count]))
         {
             ps << RED_FG 
@@ -43,6 +54,12 @@ operator << (PrintStream& ps, const Post& post)
                 ps << post.info[keys[count]].asString()
                    << RESET "\n";
                ps.indent(-5);
+            }
+            else if (keys[count] == "filename")
+            {
+                ps << post.info[keys[count]].asString()
+                   << post.info["ext"].asString()
+                   << RESET "\n";
             }
             else
             {
@@ -57,14 +74,24 @@ string
 Post::toString()
 {
     string post_string = "";
-    size_t count;
-    string fields[5] = {"No. ","Name: ","Posted: ","Tripcode: ","Comment: "};
-    string keys[5] = {"no","name","now","trip","com"};
-    for(count = 0; count < 5; count++)
+    unsigned char count;
+    string fields[6] = {"No. ","Name: ","Posted: ",
+                        "Tripcode: ", "Attatched file: ","Comment: "};
+    string keys[6] = {"no","name","now","trip","filename","com"};
+    for(count = 0; count < 6; ++count)
         if(this -> info.isMember(keys[count]))
-            post_string +=  fields[count]
-                        + this -> info[keys[count]].asString()
-                        + "\n";
+            if( keys[count] == "filename" )
+            {
+                post_string +=  fields[count]
+                            + this -> info[keys[count]].asString()
+                            + this -> info["ext"].asString()
+                            + "\n";
+
+            }
+            else
+                post_string +=  fields[count]
+                            + this -> info[keys[count]].asString()
+                            + "\n";
     return post_string;
 
 }

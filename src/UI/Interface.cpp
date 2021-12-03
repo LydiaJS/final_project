@@ -118,7 +118,7 @@ Interface::parseCommand
             this -> out << YELLOW_FG 
                                 "The Terminal Board Browser (TBB) is a "
                                 "program for navigating and browsing "
-                                "chan-type image boards.\n"
+                                "chan-like image boards.\n"
                            RED_FG "Commands:\n";
             this -> out.indent(5);
             this -> out << "goto <board|catalog|thread> [board|<list>|thread]"

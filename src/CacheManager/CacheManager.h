@@ -11,7 +11,7 @@
 #include <iostream>
 #include "../Common/Target.h"
 
-#define REFRESH_COOLDOWN 1
+#define REFRESH_COOLDOWN 3
 #define FILEEXISTS(_path_) (access(_path_.c_str(), F_OK) != -1)
 
 #define PROGNAME "tbb"

@@ -1,7 +1,8 @@
-# final_project
+# Terminal Board Browser (TBB)
 
 ### Build instructions:
 in /tbb use 'make all' or 'make tbb'
+
 
 ### TODO:
   - Improve documentation
