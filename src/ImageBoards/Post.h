@@ -6,6 +6,7 @@
 #include <jsoncpp/json/json.h>
 #include "../Common/colors.h"
 #include "../UI/PrintStream.h"
+#include "../UI/HtmlToPlain.h"
 
 using namespace std;
 

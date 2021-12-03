@@ -11,6 +11,8 @@ Post::Post(const Json::Value& in_info)
 ostream&
 operator << (ostream& os, const Post& post)
 {
+    string (*HtP)(string);
+    HtP = htmlToPlain;
     unsigned char count;
     string fields[6] = {"No. ","Name: ","Posted: ",
                         "Tripcode: ","Attatched file: ","Comment: "};
@@ -27,7 +29,7 @@ operator << (ostream& os, const Post& post)
                 os << RED_FG 
                    << fields[count]
                    << GREEN_FG
-                   << post.info[keys[count]].asString()
+                   << HtP(post.info[keys[count]].asString())
                    << RESET "\n";
             }
         }
@@ -37,6 +39,8 @@ operator << (ostream& os, const Post& post)
 PrintStream&
 operator << (PrintStream& ps, const Post& post)
 {
+    string (*HtP)(string);
+    HtP = htmlToPlain;
     unsigned char count;
     string fields[6] = {"No. ","Name: ","Posted: ",
                         "Tripcode: ", "Attatched file: ","Comment: "};
@@ -51,7 +55,7 @@ operator << (PrintStream& ps, const Post& post)
             {
                 ps << "\n";
                 ps.indent(5);
-                ps << post.info[keys[count]].asString()
+                ps << HtP(post.info[keys[count]].asString())
                    << RESET "\n";
                ps.indent(-5);
             }
@@ -63,7 +67,7 @@ operator << (PrintStream& ps, const Post& post)
             }
             else
             {
-                ps << post.info[keys[count]].asString()
+                ps << HtP(post.info[keys[count]].asString())
                     << RESET "\n";
             }
         }
@@ -73,6 +77,9 @@ operator << (PrintStream& ps, const Post& post)
 string
 Post::toString()
 {
+    string (*HtP)(string);
+    HtP = htmlToPlain;
+
     string post_string = "";
     unsigned char count;
     string fields[6] = {"No. ","Name: ","Posted: ",
@@ -86,11 +93,10 @@ Post::toString()
                             + this -> info[keys[count]].asString()
                             + this -> info["ext"].asString()
                             + "\n";
-
             }
             else
                 post_string +=  fields[count]
-                            + this -> info[keys[count]].asString()
+                            + HtP(this -> info[keys[count]].asString())
                             + "\n";
     return post_string;
 

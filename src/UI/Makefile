@@ -2,11 +2,13 @@ CC = g++ -g -O3 -std=gnu++11
 
 OBJS = PrintBuf.o \
 	   PrintStream.o \
-	   Interface.o
+	   Interface.o \
+	   HtmlToPlain.o
 
 HEADERS = PrintBuf.h \
 		  PrintStream.h \
-		  Interface.h
+		  Interface.h \
+		  HtmlToPlain.h
 
 %.o: %.cpp
 	$(CC) -c $< -o ../build/$@

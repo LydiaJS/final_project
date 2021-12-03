@@ -9,6 +9,9 @@ OriginalPost::OriginalPost(const Json::Value& in_info):
 string
 OriginalPost::toString()
 {
+    string (*HtP)(string);
+    HtP = htmlToPlain;
+
     string OP_string;
     size_t count;
     string fields[7] = {"No. ", "Name: ", "Posted: ",
@@ -28,7 +31,7 @@ OriginalPost::toString()
             else
             {
                 OP_string += fields[count] 
-                    + this -> info[keys[count]].asString()
+                    + HtP(this -> info[keys[count]].asString())
                     +  '\n';
             }
     OP_string += this -> info["replies"].asString() 
@@ -42,6 +45,9 @@ OriginalPost::toString()
 ostream&
 operator << (ostream& os, const OriginalPost& OP)
 {
+    string (*HtP)(string);
+    HtP = htmlToPlain;
+
     size_t count;
     string fields[7] = {"No. ", "Name: ", "Posted: ",
                         "Tripcode: ","Subject: ", "Attatched file: ",
@@ -60,7 +66,7 @@ operator << (ostream& os, const OriginalPost& OP)
                 os << RED_FG
                    << fields[count]
                    << YELLOW_FG 
-                   << OP.info[keys[count]].asString()
+                   << HtP(OP.info[keys[count]].asString())
                    << "\n" RESET;
 
     os << YELLOW_FG
@@ -74,6 +80,10 @@ operator << (ostream& os, const OriginalPost& OP)
 PrintStream&
 operator << (PrintStream& ps, const OriginalPost& OP)
 {
+    string (*HtP)(string);
+    HtP = htmlToPlain;
+
+
     unsigned char count;
     string fields[7] = {"No. ", "Name: ", "Posted: ",
                         "Tripcode: ","Subject: ", "Attatched file: ",
@@ -90,7 +100,7 @@ operator << (PrintStream& ps, const OriginalPost& OP)
             {
                 ps << '\n';
                 ps.indent(5);
-                ps << OP.info[keys[count]].asString()
+                ps << HtP(OP.info[keys[count]].asString())
                    << "\n" RESET;
                 ps.indent(-5);
             }
@@ -102,7 +112,7 @@ operator << (PrintStream& ps, const OriginalPost& OP)
             }
             else
             {
-                 ps << OP.info[keys[count]].asString()
+                 ps << HtP(OP.info[keys[count]].asString())
                     << "\n" RESET;
             }
         }
