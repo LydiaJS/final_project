@@ -25,8 +25,7 @@ OriginalPost::toString()
     OP_string += this -> info["replies"].asString() 
         + " Replies/" 
         + this -> info["images"].asString() 
-        + " Images" 
-        + '\n' ;
+        + " Images\n"; 
     return OP_string;
 
 }
@@ -41,23 +40,17 @@ operator << (ostream& os, const OriginalPost& OP)
                       "trip","sub","com"};
     for(count = 0; count < 6; count++)
         if(OP.info.isMember(keys[count]))
-            os << RED_FG + 
-                  fields[count] + 
-                  YELLOW_FG + 
-                  OP.info[keys[count]].asString() +
-                  RESET + 
-                  '\n';
+            os << RED_FG
+               << fields[count]
+               << YELLOW_FG 
+               << OP.info[keys[count]].asString()
+               << "\n" RESET;
 
-    os << YELLOW_FG + 
-          OP.info["replies"].asString() + 
-          RED_FG + 
-          " Replies/" +
-          YELLOW_FG +
-          OP.info["images"].asString() + 
-          RED_FG +
-          " Images" +
-          RESET +
-          '\n' ;
+    os << YELLOW_FG
+       << OP.info["replies"].asString()
+       << RED_FG " Replies/" YELLOW_FG 
+       << OP.info["images"].asString() 
+       << RED_FG " Images\n" RESET;
     return os;
 }
 
@@ -72,36 +65,29 @@ operator << (PrintStream& ps, const OriginalPost& OP)
     for(count = 0; count < 6; count++)
         if(OP.info.isMember(keys[count]))
         {
-            ps << RED_FG + 
-                  fields[count] + 
-                  YELLOW_FG;
+            ps << RED_FG
+               << fields[count]
+               << YELLOW_FG;
             if(keys[count] == "com")
             {
                 ps << '\n';
                 ps.indent(5);
-                ps << OP.info[keys[count]].asString() +
-                    RESET + 
-                    '\n';
+                ps << OP.info[keys[count]].asString()
+                   << "\n" RESET;
                 ps.indent(-5);
             }
             else
             {
-                 ps << OP.info[keys[count]].asString() +
-                    RESET + 
-                    '\n';
+                 ps << OP.info[keys[count]].asString()
+                    << "\n" RESET;
             }
         }
 
-    ps << YELLOW_FG + 
-          OP.info["replies"].asString() + 
-          RED_FG + 
-          " Replies/" +
-          YELLOW_FG +
-          OP.info["images"].asString() + 
-          RED_FG +
-          " Images" +
-          RESET +
-          '\n' ;
+    ps << YELLOW_FG
+       << OP.info["replies"].asString() 
+       << RED_FG " Replies/" YELLOW_FG
+       << OP.info["images"].asString()
+       << RED_FG " Images\n" RESET;
     return ps;
 }
 

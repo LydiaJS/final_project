@@ -21,7 +21,13 @@ Thread::Thread(const Json::Value& content):
         replies[reply_count] = Reply(content["posts"][reply_count + 1]);
 }
 
-OriginalPost
+Thread::~Thread()
+{
+    if(this -> replies)
+        delete[] this -> replies;
+}
+
+    OriginalPost
 Thread::getOP()
 {
     return this -> OP;

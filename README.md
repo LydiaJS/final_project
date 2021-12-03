@@ -1,5 +1,9 @@
 # final_project
 
+### Build instructions:
+in /tbb use 'make all' or 'make tbb'
+
 ### TODO:
-  - Add navigation between boards/threads/catalog
-  - Add user interface
+  - Improve documentation
+  - Add more protections so users don't break the program
+  - Explore possible memory leaks (especially in the Catalog object)

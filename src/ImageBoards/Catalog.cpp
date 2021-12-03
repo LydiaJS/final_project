@@ -14,7 +14,9 @@ Catalog::Catalog
     int count, subcount, deepcount, page_count, thread_count, reply_count;
     Page *pagePtr, *lastPage;
     Thread *threadPtr, *lastThread;
+    
     Json::Value page_content, thread_content, preview_content;
+
     page_count = content.size();
     this -> pages = new Page[page_count];
     pagePtr = this -> pages;
@@ -43,7 +45,7 @@ Catalog::Catalog
                         thread_content["last_replies"][deepcount]);
                 ++deepcount;
             }
-            *threadPtr = Thread(preview_content);
+            new (threadPtr) Thread(preview_content);
             ++subcount;
             ++threadPtr;
         }
@@ -53,16 +55,27 @@ Catalog::Catalog
     this -> page_count = page_count;
 }
 
+Catalog::~Catalog()
+{
+    if( this -> pages )
+    {
+        while(--this -> page_count)
+            delete[] this -> pages[this -> page_count].threads;
+        delete[] this -> pages;
+    }
+}
+
+
 ostream&
 operator << 
 (ostream& os, const Catalog& cat)
 {
     size_t count, subcount;
     os << cat.page_count << "\n";
-    for(count = 0; count < cat.page_count; count++)
+    for(count = 0; count < cat.page_count; ++count)
     {
         os << "Page: " + to_string(cat.pages[count].page) + "\n";
-        for(subcount = 0;subcount < cat.pages[count].thread_count;subcount++)
+        for(subcount = 0;subcount < cat.pages[count].thread_count;++subcount)
         {
             os << cat.pages[count].threads[subcount];
         }
@@ -75,8 +88,8 @@ operator <<
 (PrintStream& ps, const Catalog& cat)
 {
     size_t count, subcount;
-    for(count = 0; count < cat.page_count; count++)
-        for(subcount = 0;subcount < cat.pages[count].thread_count;subcount++)
+    for(count = 0; count < cat.page_count; ++count)
+        for(subcount = 0;subcount < cat.pages[count].thread_count;++subcount)
             ps << cat.pages[count].threads[subcount];
     return ps;
 }
@@ -86,10 +99,8 @@ Catalog::showPage
 (PrintStream& ps, unsigned char page)
 {
     size_t count;
-    for(count = 0; count < this -> pages[page].thread_count;++count)
-    {
+    for(count = 0; count < this -> pages[page].thread_count; ++count)
         ps << this -> pages[page].threads[count];
-    }
     return ps;
 }
 

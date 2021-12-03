@@ -17,6 +17,7 @@
 #define PROGNAME "tbb"
 #define API_URL "https://a.4cdn.org/"
 #define MEDIA_URL "https://i.4cdn.org/"
+#define TIMEOUT 10
 
 using namespace std;
 

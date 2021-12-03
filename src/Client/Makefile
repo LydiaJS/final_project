@@ -1,4 +1,4 @@
-CC = g++ -g -std=gnu++11
+CC = g++ -g -O3 -std=gnu++11
 
 OBJS = Client.o
 

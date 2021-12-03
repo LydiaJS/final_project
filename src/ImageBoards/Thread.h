@@ -19,6 +19,7 @@ Thread
         friend PrintStream& operator<< (PrintStream&, const Thread&);
         string toString();
         Thread();
+        ~Thread();
         Thread(const Json::Value&);
         OriginalPost getOP();
         Reply *getReplies(size_t &);

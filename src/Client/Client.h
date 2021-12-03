@@ -15,23 +15,30 @@
 #include <fstream>
 #include <iostream>
 #include <jsoncpp/json/value.h>
+#include <time.h>
 
 class
 Client
 {
     private:
-        CacheManager CM;
-        Target target;
-        Json::Value getContent(); 
+        CacheManager 
+            CM;
+        Target 
+            target;
+        Json::Value 
+            getContent(); 
     public:
-        TargetType getCurrentTarget();
-        PrintStream& showCurrentPage(PrintStream&);
-        PrintStream& showPage(PrintStream&);
-        void goToBoardList();
-        void goToBoard(string);
-        void goToCatalog(string);
-        void goToThread(unsigned int);
-        void goToPage(unsigned char);
+        TargetType 
+            getCurrentTarget();
+        PrintStream 
+            &showCurrentPage(PrintStream&),
+            &showPage(PrintStream&);
+        void goToBoardList(),
+             goToBoard(string),
+             goToCatalog(string),
+             goToThread(unsigned int),
+             goToPage(unsigned char),
+             refresh();
         Client();
 };
 

@@ -28,6 +28,7 @@ Catalog
         PrintStream& showPage(PrintStream&, unsigned char);
         string toString();
         Catalog();
+        ~Catalog();
         Catalog(const Json::Value&);
 };
 

@@ -16,9 +16,11 @@ operator << (ostream& os, const Post& post)
     string keys[5] = {"no","name","now","trip","com"};
     for(count = 0; count < 5; count++)
         if(post.info.isMember(keys[count]))
-            os << RED_FG + fields[count] + 
-                  GREEN_FG + post.info[keys[count]].asString() +
-                  RESET + "\n";
+            os << RED_FG 
+               << fields[count]
+               << GREEN_FG
+               << post.info[keys[count]].asString()
+               << RESET "\n";
     return os;
 }
 
@@ -39,15 +41,13 @@ operator << (PrintStream& ps, const Post& post)
                 ps << "\n";
                 ps.indent(5);
                 ps << post.info[keys[count]].asString()
-               << RESET
-               << "\n";
+                   << RESET "\n";
                ps.indent(-5);
             }
             else
             {
                 ps << post.info[keys[count]].asString()
-                    << RESET
-                    << "\n";
+                    << RESET "\n";
             }
         }
     return ps;

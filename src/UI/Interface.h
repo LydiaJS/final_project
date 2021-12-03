@@ -18,7 +18,7 @@ Interface
         const char *prompt;
         Client client;
         PrintStream out;
-        void parseCommand(char *);
+        void parseCommand(char *, unsigned char&);
     public:
         Interface();
         void loop();

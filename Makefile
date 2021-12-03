@@ -1,4 +1,4 @@
-CC = g++ -g -std=gnu++11
+CC = g++ -g -O3 -std=gnu++11
 
 OBJS = src/build/Post.o \
 	   src/build/OriginalPost.o \
@@ -34,7 +34,7 @@ UI:
 Client:
 	+$(MAKE) -C src/Client
 
-TBB:
+tbb:
 	+$(MAKE) -C src/CacheManager
 	+$(MAKE) -C src/ImageBoards
 	+$(MAKE) -C src/Client
@@ -47,6 +47,7 @@ all:
 	+$(MAKE) -C src/Client
 	+$(MAKE) -C src/UI
 	$(CC) -o tbb src/tbb.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
+	$(CC) -o test src/test.cpp $(OBJS) $(DEPS) -lcurl -ljsoncpp -lreadline
 
 test:
 	+$(MAKE) -C src/CacheManager
