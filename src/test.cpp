@@ -53,11 +53,29 @@ testCatalog()
 
 }
 
-
 void
 testThread()
 {
+    PrintStream ps(cout);
+    CacheManager CM;
+    Json::Value content;
+    string path;
+    Target target;
+    ifstream content_stream;
+    target.type = THREAD;
+    target.board = "g";
+    target.page = 0;
+    target.thread = 84607585;
+    CM.prepCache(target);
+    path = CM.getPath(target);
+    content_stream.open(path, ios::binary);
+    content_stream >> content;
+    
+    Thread thread(content);
+    ps << thread;
+
 }
+
 void
 testInterface()
 {
@@ -65,10 +83,21 @@ testInterface()
     interface.loop();
 }
 
+void
+testHtmlToPlain()
+{
+    string html;
+    html = "Why aren&#039;t you buying Alder Lake, Ryzen fags?"
+    " All the tech tubers told you so.";
+    cout << htmlToPlain(html) << endl;
+}
+
 int
 main (int argc, char **argv)
 {
   //testClient ();
-  testCatalog();
+  //testCatalog();
+  //testThread();
   //testInterface();
+  testHtmlToPlain();
 }

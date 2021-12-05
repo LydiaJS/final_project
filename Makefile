@@ -1,4 +1,4 @@
-CC = g++ -g -O3 -std=gnu++11
+CC = g++ -g -Ofast -std=gnu++11
 
 OBJS = src/build/Post.o \
 	   src/build/OriginalPost.o \

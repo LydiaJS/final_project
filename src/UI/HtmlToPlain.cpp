@@ -30,8 +30,8 @@ htmlToPlain
         "&",
         "<",
         ">",
-        "\""
-        "'",
+        "\"",
+        "'"
     };
 
     plainText = html;

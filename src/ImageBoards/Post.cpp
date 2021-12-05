@@ -59,6 +59,10 @@ operator << (PrintStream& ps, const Post& post)
                    << RESET "\n";
                ps.indent(-5);
             }
+            else if (keys[count] == "sub")
+            {
+                ps << HtP(post.info[keys[count]].asString());
+            }
             else if (keys[count] == "filename")
             {
                 ps << post.info[keys[count]].asString()
@@ -67,8 +71,8 @@ operator << (PrintStream& ps, const Post& post)
             }
             else
             {
-                ps << HtP(post.info[keys[count]].asString())
-                    << RESET "\n";
+                ps << post.info[keys[count]].asString()
+                   << RESET "\n";
             }
         }
     return ps;
