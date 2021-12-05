@@ -14,14 +14,15 @@ Interface::parseCommand
 {
     size_t arg_count;
     string *args;
-    unsigned int thread;
     stringstream command;
 
     arg_count = 0;
     command << line;
     args = new string[3];
     // Split the command into arguments
-    while(getline(command,args[arg_count++],' '));
+    while(getline(command,args[arg_count],' '))
+        if(++arg_count > 2)
+            break;
     
     // Evaluate the first argument to assess the command being run
     switch(args[0].c_str()[0])

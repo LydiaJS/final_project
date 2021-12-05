@@ -100,7 +100,7 @@ Catalog::showPage
 {
     size_t count;
     for(count = 0; count < this -> pages[page].thread_count; ++count)
-        ps << this -> pages[page].threads[count];
+        ps << this -> pages[page].threads[count].getOP();
     return ps;
 }
 
