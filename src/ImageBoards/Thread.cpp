@@ -21,6 +21,7 @@ Thread::Thread(const Json::Value& content):
         this -> replies = new Reply[reply_count];
         while(--reply_count)
             replies[reply_count] = Reply(content["posts"][reply_count + 1]);
+        replies[reply_count] = Reply(content["posts"][reply_count + 1]);
     }
 }
 

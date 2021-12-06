@@ -61,6 +61,7 @@ Catalog::~Catalog()
     {
         while(--this -> page_count)
             delete[] this -> pages[this -> page_count].threads;
+        delete[] this -> pages[this -> page_count].threads;
         delete[] this -> pages;
     }
 }
