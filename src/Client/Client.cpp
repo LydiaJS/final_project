@@ -116,7 +116,9 @@ Client::showPage
             while(--count)
                 ps <<  content["boards"][count]["board"].asString()
                    << " ";
-            ps << RESET "\n";
+            ps <<  content["boards"][count]["board"].asString()
+                   << RESET "\n";
+
             break;
         case THREAD_LIST:
             page = static_cast<unsigned int>(this -> target.page);
