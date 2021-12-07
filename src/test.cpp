@@ -87,7 +87,7 @@ void
 testHtmlToPlain()
 {
     string html;
-    html = "Why aren&#039;t you buying Alder Lake, Ryzen fags?"
+    html = "Why aren&#039;t you buying Alder Lake, Ryzen?"
     " All the tech tubers told you so.";
     cout << htmlToPlain(html) << endl;
 }
