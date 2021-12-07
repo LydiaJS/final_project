@@ -24,7 +24,8 @@ DEPS =  src/ImageBoards/Post.h \
 		src/Common/Target.h \
 		src/UI/HtmlToPlain.h
 
-CacheManager:
+
+CacheManager: 
 	+$(MAKE) -C src/CacheManager
 
 ImageBoards:
@@ -60,7 +61,7 @@ test:
 
 default: TBB
 
+clean: 
+	rm src/build/*.o; [[ -f "test" ]] && rm test; [[ -f "tbb" ]] && rm tbb
 
-clean:
-	rm src/build/*.o test tbb
 .PHONY: clean

@@ -100,7 +100,7 @@ Client::showPage
 
     string content_path;
     Json::Value content;
-    unsigned int count, page;
+    unsigned int count, total, page;
     time_t last_modified;
     char date[20];
     struct tm *tm;
@@ -111,34 +111,40 @@ Client::showPage
     switch(this -> target.type)
     {
         case BOARD_LIST:
-            count = content["boards"].size();
+            total = content["boards"].size();
+            count = total;
             ps << YELLOW_FG;
-            while(--count)
-                ps <<  content["boards"][count]["board"].asString()
+            while(count)
+            {
+                ps <<  content["boards"][total - count]["board"].asString()
                    << " ";
-            ps <<  content["boards"][count]["board"].asString()
+                --count;
+            }
+            ps <<  content["boards"][total - count]["board"].asString()
                    << RESET "\n";
 
             break;
         case THREAD_LIST:
             page = static_cast<unsigned int>(this -> target.page);
-            count = 0;
+            total = content[page]["threads"].size();
+            count = total;
             ps << RED_FG "Thread No.\tReplies      Last Modified" RESET "\n";
-            while(count < content[page]["threads"].size())
+            while(count)
             {
                 
                 last_modified = (time_t)
-                    content[page]["threads"][count]["last_modified"].asInt();
+                    content[page]["threads"][total - count]["last_modified"]
+                    .asInt();
                 tm = localtime(&last_modified);
                 strftime(date, sizeof(date),"%F %T",tm);
                 ps << YELLOW_FG
-                   << content[page]["threads"][count]["no"]
+                   << content[page]["threads"][total - count]["no"]
                    << "\t"
-                   << content[page]["threads"][count]["replies"]
+                   << content[page]["threads"][total - count]["replies"]
                    << "\t     "
                    << date
                    << RESET "\n";
-                ++count;
+                --count;
             }
             break;
         case CATALOG:
