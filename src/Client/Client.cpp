@@ -131,7 +131,6 @@ Client::showPage
             ps << RED_FG "Thread No.\tReplies      Last Modified" RESET "\n";
             while(count)
             {
-                
                 last_modified = (time_t)
                     content[page]["threads"][total - count]["last_modified"]
                     .asInt();
