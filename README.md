@@ -1,7 +1,14 @@
 # Terminal Board Browser (TBB)
+### Team info
+Lydia Jacobs-Skolik - Email: ccjs@bu.edu
+Taylor Hartman - Email: hartmant@bu.edu
+Blake Halterman - Email: bhalt@bu.edu
+
 
 ### Build instructions:
 in /tbb use 'make all' or 'make tbb'
+Builds on centos with devtoolset-7
+Requires libcurl, and libjsoncpp
 
 ### Screenshots:
 #### The welcome and help page
@@ -12,7 +19,3 @@ in /tbb use 'make all' or 'make tbb'
 ![Viewing a thread](https://github.com/LydiaJS/final_project/blob/main/Screenshots/2021-12-03-174853.png?raw=true)
 #### Viewing another thread
 ![Viewing a thread](https://github.com/LydiaJS/final_project/blob/main/Screenshots/2021-12-03-180207.png?raw=true)
-### TODO:
-  - Improve documentation
-  - Add more protections so users don't break the program
-  - Explore possible memory leaks (especially in the Catalog object)
